@@ -8,7 +8,7 @@
  */
 
 (function($, undefined){
-	
+
 	"use strict";
 
 	$.widget("ui.rangeSliderLabel", $.ui.rangeSliderMouseTouch, {
@@ -100,7 +100,7 @@
 				this._display(this.options.handle[this.options.handleType]("value"));
 				this._positionner.PositionLabels();
 			}
-			
+
 			this._positionner.options.show = this.options.show;
 		},
 
@@ -158,7 +158,7 @@
 
 		_onSwitch: function(event, isLeft){
 			this.options.isLeft = isLeft;
-			
+
 			this._toggleClass();
 			this._positionner.PositionLabels();
 		},
@@ -227,7 +227,7 @@
 			this._resizeProxy = $.proxy(this.onWindowResize, this);
 
 			$(window).resize(this._resizeProxy);
-		}
+		};
 
 		this.Destroy = function(){
 			if (this._resizeProxy){
@@ -245,13 +245,13 @@
 				this.left = null;
 				this.right = null;
 			}
-			
-			this.cache = null;			
-		}
+
+			this.cache = null;
+		};
 
 		this.AfterInit = function () {
 			this.initialized = true;
-		}
+		};
 
 		this.Cache = function(){
 			if (this.label1.css("display") === "none"){
@@ -270,7 +270,7 @@
 			this.CacheElement(this.handle1, this.cache.handle1);
 			this.CacheElement(this.handle2, this.cache.handle2);
 			this.CacheElement(this.label1.offsetParent(), this.cache.offsetParent);
-		}
+		};
 
 		this.CacheIfNecessary = function(){
 			if (this.cache === null){
@@ -282,7 +282,7 @@
 				this.CacheHeight(this.label2, this.cache.label2);
 				this.CacheWidth(this.label1.offsetParent(), this.cache.offsetParent);
 			}
-		}
+		};
 
 		this.CacheElement = function(label, cache){
 			this.CacheWidth(label, cache);
@@ -298,27 +298,27 @@
 				left: this.ParsePixels("borderLeftWidth", label),
 				right: this.ParsePixels("borderRightWidth", label)
 			};
-		}
+		};
 
 		this.CacheWidth = function(label, cache){
 			cache.width = label.width();
 			cache.outerWidth = label.outerWidth();
-		}
+		};
 
 		this.CacheHeight = function(label, cache){
 			cache.outerHeightMargin = label.outerHeight(true);
-		}
+		};
 
 		this.ParsePixels = function(name, element){
 			return parseInt(element.css(name), 10) || 0;
-		}
+		};
 
 		this.BindHandle = function(handle){
 			handle.bind("updating.positionner", $.proxy(this.onHandleUpdating, this));
 			handle.bind("update.positionner", $.proxy(this.onHandleUpdated, this));
 			handle.bind("moving.positionner", $.proxy(this.onHandleMoving, this));
 			handle.bind("stop.positionner", $.proxy(this.onHandleStop, this));
-		}
+		};
 
 		this.PositionLabels = function(){
 			this.CacheIfNecessary();
@@ -334,7 +334,7 @@
 
 			this.PositionLabel(this.label1, label1Pos.left, this.cache.label1);
 			this.PositionLabel(this.label2, label2Pos.left, this.cache.label2);
-		}
+		};
 
 		this.PositionLabel = function(label, leftOffset, cache){
 			var parentShift = this.cache.offsetParent.offset.left + this.cache.offsetParent.border.left,
@@ -353,7 +353,7 @@
 				label.css("left", "");
 				label.css("right", rightPosition);
 			}
-		}
+		};
 
 		this.ConstraintPositions = function(pos1, pos2){
 			if (pos1.center < pos2.center && pos1.outerRight > pos2.outerLeft){
@@ -363,7 +363,7 @@
 				pos2 = this.getLeftPosition(pos2, pos1);
 				pos1 = this.getRightPosition(pos2, pos1);
 			}
-		}
+		};
 
 		this.getLeftPosition = function(left, right){
 			var center = (right.center + left.center) / 2,
@@ -372,7 +372,7 @@
 			left.left = leftPos;
 
 			return left;
-		}
+		};
 
 		this.getRightPosition = function(left, right){
 			var center = (right.center + left.center) / 2;
@@ -380,7 +380,7 @@
 			right.left = center + right.cache.margin.left + right.cache.border.left;
 
 			return right;
-		}
+		};
 
 		this.ShowIfNecessary = function(){
 			if (this.options.show === "show" || this.moving || !this.initialized || this.updating) return;
@@ -388,7 +388,7 @@
 			this.label1.stop(true, true).fadeIn(this.options.durationIn || 0);
 			this.label2.stop(true, true).fadeIn(this.options.durationIn || 0);
 			this.moving = true;
-		}
+		};
 
 		this.HideIfNeeded = function(){
 			if (this.moving === true){
@@ -396,7 +396,7 @@
 				this.label2.stop(true, true).delay(this.options.delayOut || 0).fadeOut(this.options.durationOut || 0);
 				this.moving = false;
 			}
-		}
+		};
 
 		this.onHandleMoving = function(event, ui){
 			this.ShowIfNecessary();
@@ -404,38 +404,38 @@
 			this.UpdateHandlePosition(ui);
 
 			this.PositionLabels();
-		}
+		};
 
 		this.onHandleUpdating = function(){
 			this.updating = true;
-		}
+		};
 
 		this.onHandleUpdated = function(){
 			this.updating = false;
 			this.cache = null;
-		}
+		};
 
 		this.onHandleStop = function(){
 			this.HideIfNeeded();
-		}
+		};
 
 		this.onWindowResize = function(){
 				this.cache = null;
-		}
+		};
 
 		this.UpdateHandlePosition = function(ui){
 			if (this.cache === null) return;
-			
+
 			if (ui.element[0] === this.handle1[0]){
 				this.UpdatePosition(ui, this.cache.handle1);
 			}else{
 				this.UpdatePosition(ui, this.cache.handle2);
 			}
-		}
+		};
 
 		this.UpdatePosition = function(element, cache){
 			cache.offset = element.offset;
-		}
+		};
 
 		this.GetRawPosition = function(labelCache, handleCache){
 			var handleCenter = handleCache.offset.left + handleCache.outerWidth / 2,
@@ -452,8 +452,8 @@
 				outerRight: outerLeft + labelCache.outerWidth + labelCache.margin.left + labelCache.margin.right,
 				cache: labelCache,
 				center: handleCenter
-			}
-		}
+			};
+		};
 
 		this.Init();
 	}
