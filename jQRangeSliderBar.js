@@ -80,8 +80,8 @@
 			}
 
 			if (value !== false){
-				var min = typeof value.min === "undefined" ? this.options.range.min || false : value.min,
-					max = typeof value.max === "undefined" ? this.options.range.max || false : value.max;
+				var min = valueOrFalse(value.min, this.options.range.min),
+					max = valueOrFalse(value.max, this.options.range.max);
 
 				this.options.range = {
 					min: min,
@@ -253,6 +253,10 @@
 		_onDragLeftHandle: function(event, ui){
 			this._cacheIfNecessary();
 
+			if (ui.element[0] !== this.options.leftHandle[0]){
+				return;
+			}
+
 			if (this._switchedValues()){
 				this._switchHandles();
 				this._onDragRightHandle(event, ui);
@@ -268,6 +272,10 @@
 
 		_onDragRightHandle: function(event, ui){
 			this._cacheIfNecessary();
+
+			if (ui.element[0] !== this.options.rightHandle[0]){
+				return;
+			}
 
 			if (this._switchedValues()){
 				this._switchHandles();
@@ -354,6 +362,10 @@
 		 */
 
 		_mouseWheelZoom: function(event, delta, deltaX, deltaY){
+			if (!this.enabled){
+				return false;
+			}
+
 			var middle = this._values.min + (this._values.max - this._values.min) / 2,
 				leftRange = {},
 				rightRange = {};
@@ -383,6 +395,10 @@
 		},
 
 		_mouseWheelScroll: function(event, delta, deltaX, deltaY){
+			if (!this.enabled){
+				return false;
+			}
+
 			if (this._wheelTimeout === false){
 				this.startScroll();
 			} else {
@@ -523,7 +539,14 @@
 			this._cache();
 			this._positionBar();
 		}
-
 	});
+
+	function valueOrFalse(value, defaultValue){
+		if (typeof value === "undefined"){
+			return defaultValue || false;
+		}
+
+		return value;
+	}
 
 }(jQuery));
