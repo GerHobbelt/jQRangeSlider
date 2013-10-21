@@ -343,6 +343,7 @@
 				right, constrainedRight;
 
 			position.left = $.ui.rangeSliderDraggable.prototype._constraintPosition.apply(this, [left]);
+
 			position.left = this._leftHandle("position", position.left);
 
 			right = position.left + this.cache.width.outer - this.cache.rightHandle.width;

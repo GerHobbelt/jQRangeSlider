@@ -70,9 +70,6 @@
 		_mouseDrag: function(event){
 			var position = event.pageX - this.cache.click.left;
 
-			if (!position)
-				return false;
-
 			position = this._constraintPosition(position + this.cache.initialOffset.left);
 
 			this._applyPosition(position);

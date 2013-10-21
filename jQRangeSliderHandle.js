@@ -189,9 +189,9 @@
 			var limits = this.options.limits;
 			if (limits)
 			{
-				if (this.options.isLeft && (limits.min || (limits.min === 0)))
+				if (this.options.isLeft && limits.min !== false)
 					value = Math.max(value, limits.min);
-				else if (limits.max || (limits.max === 0))
+				else if (limits.max !== false)
 					value = Math.min(value, limits.max);
 			}
 
@@ -270,14 +270,7 @@
 			if (typeof position !== "undefined"){
 				this._cache();
 
-				//There might be a slight difference between the positions,
-				//so if this difference is lower than 0.005 we consider it null.
-				var oldPos = position;
 				position = this._constraintPosition(position);
-				var diff = Math.abs(position - oldPos);
-				if (diff < 0.005)
-					return this._left;
-
 				this._applyPosition(position);
 			}
 
